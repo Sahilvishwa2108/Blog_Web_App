@@ -37,10 +37,6 @@ If you would like to contribute to the project, follow these steps:
 
 This project is licensed under the [MIT License](LICENSE).
 
-## Acknowledgements
-
-I would like to express my sincere gratitude to [Hitesh Choudhary](link-to-hitesh-profile) for his invaluable guidance and support throughout the development of this project. His expertise and teachings have played a crucial role in shaping my skills and making this project a reality.
-
 Special thanks to the [ChaiAurCode](link-to-codewithhitesh) community for providing an inspiring learning environment.
 
 
