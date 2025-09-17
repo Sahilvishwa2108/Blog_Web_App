@@ -3,7 +3,6 @@ import { Container, Logo, LogoutBtn } from "../index";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import logo from '../../assets/logo.png';
 
 function Header() {
   const authStatus = useSelector((state) => state.auth.status);
@@ -13,6 +12,11 @@ function Header() {
     {
       name: "Home",
       slug: "/",
+      active: true,
+    },
+    {
+      name: "About",
+      slug: "/about",
       active: true,
     },
     {
@@ -38,21 +42,21 @@ function Header() {
   ];
 
   return (
-    <header className="py-3 shadow bg-gray-500 bg-opacity-5">
+    <header className="py-4 shadow-lg bg-black/20 backdrop-blur-md border-b border-white/10 sticky top-0 z-50">
       <Container>
-        <nav className="flex">
+        <nav className="flex items-center justify-between">
           <div className="mr-4">
             <Link to="/">
-              <img src={logo} className="w-28 rounded-md" alt="Blog App" />
+              <Logo width="150px" />
             </Link>
           </div>
-          <ul className="flex ml-auto">
+          <ul className="flex items-center space-x-1">
             {navItems.map((item) =>
               item.active ? (
                 <li key={item.name}>
                   <button
                     onClick={() => navigate(item.slug)}
-                    className="inline-bock px-6 py-2 duration-200 hover:bg-blue-100 rounded-full"
+                    className="px-4 py-2 text-gray-200 hover:text-cyan-400 hover:bg-white/10 rounded-lg transition-all duration-200 font-medium backdrop-blur-sm"
                   >
                     {item.name}
                   </button>

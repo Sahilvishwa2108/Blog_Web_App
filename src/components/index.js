@@ -12,6 +12,9 @@ import PostForm from "./post-form/PostForm";
 import PostCard from "./PostCard";
 import AuthLayout from "./AuthLayout";
 import Input from "./Input";
+import SearchBar from "./SearchBar";
+import SocialShare from "./SocialShare";
+
 export {
     Header,
     Footer,
@@ -27,4 +30,6 @@ export {
     AuthLayout, 
     Input,
     Select,
+    SearchBar,
+    SocialShare,
 }

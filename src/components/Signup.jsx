@@ -5,16 +5,17 @@ import {login} from '../store/authSlice'
 import {Button, Input, Logo} from './index.js'
 import {useDispatch} from 'react-redux'
 import {useForm} from 'react-hook-form'
-import logo from '../assets/logo.png'
 
 function Signup() {
     const navigate = useNavigate()
     const [error, setError] = useState("")
+    const [loading, setLoading] = useState(false)
     const dispatch = useDispatch()
     const {register, handleSubmit} = useForm()
 
     const create = async(data) => {
         setError("")
+        setLoading(true)
         try {
             const userData = await authService.createAccount(data)
             if (userData) {
@@ -24,40 +25,46 @@ function Signup() {
             }
         } catch (error) {
             setError(error.message)
+        } finally {
+            setLoading(false)
         }
     }
 
   return (
-    <div className="flex items-center justify-center my-10">
-            <div className={`mx-auto w-full max-w-lg bg-gray-100 rounded-xl p-10 border border-black/10`}>
-            <div className="mb-2 flex justify-center">
-                    <span className="inline-block w-full max-w-[100px]">
-                        <img src={logo} className="w-40 rounded-md" alt="Blog App" />
-                    </span>
+    <div className="flex items-center justify-center my-20 px-4">
+        <div className="w-full max-w-md">
+            <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-200">
+                <div className="mb-6 flex justify-center">
+                    <Logo width="200px" />
                 </div>
-                <h2 className="text-center text-2xl font-bold leading-tight">Sign up to create account</h2>
-                <p className="mt-2 text-center text-base text-black/60">
-                    Already have an account?&nbsp;
-                    <Link
-                        to="/login"
-                        className="font-medium text-primary transition-all duration-200 hover:underline"
-                    >
-                        Sign In
-                    </Link>
-                </p>
-                {error && <p className="text-red-600 mt-8 text-center">{error}</p>}
+                <div className="text-center mb-6">
+                    <h2 className="text-2xl font-bold text-gray-900 mb-2">Create your account</h2>
+                    <p className="text-gray-600">
+                        Already have an account?{" "}
+                        <Link
+                            to="/login"
+                            className="font-medium text-blue-600 hover:text-blue-500 transition-colors"
+                        >
+                            Sign in
+                        </Link>
+                    </p>
+                </div>
+                {error && (
+                    <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
+                        <p className="text-red-600 text-sm">{error}</p>
+                    </div>
+                )}
 
-                <form onSubmit={handleSubmit(create)}>
-                    <div className='space-y-5'>
-                        <Input
-                        label="Full Name: "
+                <form onSubmit={handleSubmit(create)} className="space-y-4">
+                    <Input
+                        label="Full Name"
                         placeholder="Enter your full name"
                         {...register("name", {
                             required: true,
                         })}
-                        />
-                        <Input
-                        label="Email: "
+                    />
+                    <Input
+                        label="Email address"
                         placeholder="Enter your email"
                         type="email"
                         {...register("email", {
@@ -67,21 +74,24 @@ function Signup() {
                                 "Email address must be a valid address",
                             }
                         })}
-                        />
-                        <Input
-                        label="Password: "
+                    />
+                    <Input
+                        label="Password"
                         type="password"
                         placeholder="Enter your password"
                         {...register("password", {
                             required: true,})}
-                        />
-                        <Button type="submit" className="w-full">
-                            Create Account
-                        </Button>
-                    </div>
+                    />
+                    <Button 
+                        type="submit" 
+                        className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 rounded-lg transition-colors"
+                        disabled={loading}
+                    >
+                        {loading ? "Creating Account..." : "Create Account"}
+                    </Button>
                 </form>
             </div>
-
+        </div>
     </div>
   )
 }
