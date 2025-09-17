@@ -5,8 +5,10 @@ import "./index.css";
 import { Provider } from "react-redux";
 import store from "./store/store.js";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import Home from "./pages/Home.jsx";
+import LandingPage from "./pages/LandingPage.jsx";
+import About from "./pages/About.jsx";
 import { AuthLayout, Login } from "./components/index.js";
+import ErrorBoundary from "./components/ErrorBoundary.jsx";
 
 import AddPost from "./pages/AddPost.jsx";
 import Signup from "./pages/Signup.jsx";
@@ -22,7 +24,11 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <Home />,
+        element: <LandingPage />,
+      },
+      {
+        path: "/about",
+        element: <About />,
       },
       {
         path: "/login",
@@ -77,8 +83,10 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <Provider store={store}>
-      <RouterProvider router={router} />
-    </Provider>
+    <ErrorBoundary>
+      <Provider store={store}>
+        <RouterProvider router={router} />
+      </Provider>
+    </ErrorBoundary>
   </React.StrictMode>
 );

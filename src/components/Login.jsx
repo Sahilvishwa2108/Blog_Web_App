@@ -5,16 +5,17 @@ import { Button, Input, Logo } from "./index";
 import { useDispatch } from "react-redux";
 import authService from "../appwrite/auth";
 import { useForm } from "react-hook-form";
-import logo from "../assets/logo.png";
 
 function Login() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { register, handleSubmit } = useForm();
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const login = async (data) => {
     setError("");
+    setLoading(true);
     try {
       const session = await authService.login(data);
       if (session) {
@@ -24,36 +25,40 @@ function Login() {
       }
     } catch (error) {
       setError(error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="flex items-center justify-center w-full my-20">
-      <div
-        className={`mx-auto w-full max-w-lg bg-gray-100 rounded-xl p-10 border border-black/10`}
-      >
-        <div className="mb-2 flex justify-center">
-          <span className="inline-block w-full max-w-[100px]">
-            <img src={logo} className="w-40 rounded-md" alt="Blog App" />
-          </span>
-        </div>
-        <h2 className="text-center text-2xl font-bold leading-tight">
-          Sign in to your account
-        </h2>
-        <p className="mt-2 text-center text-base text-black/60">
-          Don&apos;t have any account?&nbsp;
-          <Link
-            to="/signup"
-            className="font-medium text-primary transition-all duration-200 hover:underline"
-          >
-            Sign Up
-          </Link>
-        </p>
-        {error && <p className="text-red-600 mt-8 text-center">{error}</p>}
-        <form onSubmit={handleSubmit(login)} className="mt-8">
-          <div className="space-y-5">
+    <div className="flex items-center justify-center w-full my-20 px-4">
+      <div className="w-full max-w-md">
+        <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-200">
+          <div className="mb-6 flex justify-center">
+            <Logo width="200px" />
+          </div>
+          <div className="text-center mb-6">
+            <h2 className="text-2xl font-bold text-gray-900 mb-2">
+              Welcome back
+            </h2>
+            <p className="text-gray-600">
+              Don't have an account?{" "}
+              <Link
+                to="/signup"
+                className="font-medium text-blue-600 hover:text-blue-500 transition-colors"
+              >
+                Sign up
+              </Link>
+            </p>
+          </div>
+          {error && (
+            <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
+              <p className="text-red-600 text-sm">{error}</p>
+            </div>
+          )}
+          <form onSubmit={handleSubmit(login)} className="space-y-4">
             <Input
-              label="Email: "
+              label="Email address"
               placeholder="Enter your email"
               type="email"
               {...register("email", {
@@ -66,18 +71,22 @@ function Login() {
               })}
             />
             <Input
-              label="Password: "
+              label="Password"
               type="password"
               placeholder="Enter your password"
               {...register("password", {
                 required: true,
               })}
             />
-            <Button type="submit" className="w-full">
-              Sign in
+            <Button 
+              type="submit" 
+              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 rounded-lg transition-colors"
+              disabled={loading}
+            >
+              {loading ? "Signing in..." : "Sign in"}
             </Button>
-          </div>
-        </form>
+          </form>
+        </div>
       </div>
     </div>
   );
